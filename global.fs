@@ -5,11 +5,12 @@ $69       constant CH569
 
 $40001004 constant R8_GLOB_ROM_CFG  \ RWA, flash ROM configuration, SAM and bit7:6 must write 1:0
 
-$01 constant ROM_EXT_RE      \ RWA, enable flash ROM being read by external programmer: 0=reading protect, 1=enable read
-$02 constant CODE_RAM_WE     \ RWA, enable code RAM being write: 0=writing protect, 1=enable write
-$04 constant ROM_DATA_WE     \ RWA, enable flash ROM data area being erase/write: 0=writing protect, 1=enable program and erase
-$08 constant ROM_CODE_WE     \ RWA, enable flash ROM code & data area being erase/write: 0=writing protect, 1=enable program and erase
-$10 constant ROM_CODE_OFS    \ RWA, user code offset in ROM: 1: 0x04000; 0: 0x00000.
+1 0 lshift constant ROM_EXT_RE      \ RWA, enable flash ROM being read by external programmer: 0=reading protect, 1=enable read
+1 1 lshift constant CODE_RAM_WE     \ RWA, enable code RAM being write: 0=writing protect, 1=enable write
+1 2 lshift constant ROM_DATA_WE     \ RWA, enable flash ROM data area being erase/write: 0=writing protect, 1=enable program and erase
+1 3 lshift constant ROM_CODE_WE     \ RWA, enable flash ROM code & data area being erase/write: 0=writing protect, 1=enable program and erase
+1 4 lshift constant ROM_CODE_OFS    \ RWA, user code offset in ROM: 1: 0x04000; 0: 0x00000.
+1 7 lshift constant ROM_WRITE  \ don't know the function for sure, must be set for writing flash
 
 : print-glob-rom-cfg
   R8_GLOB_ROM_CFG c@
@@ -18,6 +19,7 @@ $10 constant ROM_CODE_OFS    \ RWA, user code offset in ROM: 1: 0x04000; 0: 0x00
   dup ROM_DATA_WE  and if cr ." ROM_DATA_WE" then
   dup ROM_CODE_WE  and if cr ." ROM_CODE_WE" then
   dup ROM_CODE_OFS and if cr ." ROM_CODE_OFS" then
+  dup ROM_WRITE    and if cr ." ROM_WRITE" then
   drop
   cr
 ;
@@ -49,3 +51,7 @@ $20 constant BOOT_LOADER   \ RO, indicate boot loader status: 0=application stat
   cr
 ;
 
+: safe-access-mode-on ( -- )
+  $57 R8_SAFE_ACCESS c!
+  $a8 R8_SAFE_ACCESS c!
+;
