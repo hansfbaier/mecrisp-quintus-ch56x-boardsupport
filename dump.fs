@@ -61,3 +61,17 @@ decimal
     UNTIL
     2drop
 ;
+
+: inspect ( addr -- )
+  begin
+    dup $400 dump ( addr -- )
+    key           ( addr key -- )
+    dup [char] p = if
+      swap $800 - swap
+      else
+      swap $400 + swap
+    then
+  [char] q = until
+  cr
+  drop
+;
