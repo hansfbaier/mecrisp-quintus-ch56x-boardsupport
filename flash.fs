@@ -48,9 +48,9 @@ $8000 constant ROM_ADDR_OFFSET
   0 _rom-access
 ;
 
-%1011 _ROM_BEGIN_READ
-%0110 _ROM_BEGIN_WRITE
-%0101 _ROM_END_WRITE
+%1011 constant _ROM_BEGIN_READ
+%0110 constant _ROM_BEGIN_WRITE
+%0101 constant _ROM_END_WRITE
 
 : _rom-begin ( code -- )
   0     R16_ROM_CR   c!
@@ -88,7 +88,13 @@ $8000 constant ROM_ADDR_OFFSET
   _rom-read-byte  8 lshift or
   _rom-read-byte 16 lshift or
   _rom-read-byte 24 lshift or
-  rom-access-end
+  _rom-access-end
+;
+
+: _rom-write-start ( -- )
+  _ROM_BEGIN_WRITE _rom-begin
+  _rom-access-end
+  %10 _rom-begin
 ;
 
 : _rom-write-end ( -- status )
@@ -96,19 +102,13 @@ $8000 constant ROM_ADDR_OFFSET
   $ff >r \ return status
   $280000 0
   do
-    _ROM_END_WRITE _rom_begin
+    _ROM_END_WRITE _rom-begin
     _rom-data-read drop
     _rom-data-read ( status )
     _rom-access-end
     1 and if r> drop 0 >r leave then
   loop
   r>
-;
-
-: _rom-write-start ( -- )
-  _ROM_END_WRITE _rom_begin
-  _rom-access-end
-  %10 _rom_begin
 ;
 
 : _rom-write-enable
@@ -131,7 +131,6 @@ $8000 constant ROM_ADDR_OFFSET
   dup $80000 < if
     _rom-write-enable
     begin
-      _rom-access-end
       _rom-write-start     ( data romaddr )
       _rom-write-addr      ( data )
       R32_ROM_DATA !       (      )
@@ -143,5 +142,7 @@ $8000 constant ROM_ADDR_OFFSET
       _rom-write-end
     0<> until
     _rom-write-disable
+  else
+    ." rom address out of range" cr
   then
 ;
