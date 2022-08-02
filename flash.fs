@@ -127,7 +127,7 @@ $8000 constant ROM_ADDR_OFFSET
 ;
 
 : rom-write-word ( data addr --  )
-  %11 not and $8000 + ( data romaddr -- )
+  %11 not and ROM_ADDR_OFFSET + ( data romaddr -- )
   dup $80000 < if
     _rom-write-enable
     begin
