@@ -64,14 +64,14 @@ $8000 constant ROM_ADDR_OFFSET
                 $ff and _rom-data-write
 ;
 
-: _rom-read-byte ( -- databyte )
+: _rom-read-byte ( -- byte )
     _rom-data-read drop
     _rom-data-read drop
     _rom-data-read drop
     R8_ROM_DATA c@
 ;
 
-: rom-read-byte ( addr -- )
+: rom-read-byte ( addr -- byte )
   ROM_ADDR_OFFSET +
   _ROM_BEGIN_READ _rom-begin
   _rom-write-addr
@@ -80,8 +80,8 @@ $8000 constant ROM_ADDR_OFFSET
 ;
 
 : rom-read-word ( addr -- word )
-  ROM_ADDR_OFFSET +
-  _rom-begin
+  ROM_ADDR_OFFSET + ( addr )
+  _ROM_BEGIN_READ _rom-begin
   _rom-write-addr
   _rom-data-read drop _rom-data-read drop
   _rom-read-byte
