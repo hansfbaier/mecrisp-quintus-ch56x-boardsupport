@@ -12,7 +12,7 @@ $40001004 constant R8_GLOB_ROM_CFG  \ RWA, flash ROM configuration, SAM and bit7
 1 4 lshift constant ROM_CODE_OFS    \ RWA, user code offset in ROM: 1: 0x04000; 0: 0x00000.
 1 7 lshift constant ROM_WRITE  \ don't know the function for sure, must be set for writing flash
 
-: print-glob-rom-cfg
+: GLOB-ROM-CFG.
   R8_GLOB_ROM_CFG c@
   dup ROM_EXT_RE   and if cr ." ROM_EXT_RE" then
   dup CODE_RAM_WE  and if cr ." CODE_RAM_WE" then
@@ -35,7 +35,7 @@ $08 constant CFG_BOOT_EN   \ RO, boot-loader enable status
 $10 constant CFG_DEBUG_EN  \ RO, debug enable status
 $20 constant BOOT_LOADER   \ RO, indicate boot loader status: 0=application status (by software reset), 1=boot loader status
 
-: print-rst-boot-stat
+: RST-BOOT-STAT.
   R8_RST_BOOT_STAT c@
   dup %11 and case
     RST_FLAG_SW   of cr ." RST_FLAG_SW:   software reset" endof
