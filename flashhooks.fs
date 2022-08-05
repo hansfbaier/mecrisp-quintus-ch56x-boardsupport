@@ -41,15 +41,16 @@
 ' hfstore hook-hflash! !
 
 0     variable cnt
-$4c00 variable flashdictstart
+$4c00 variable flashdict
 : eraseflash
   0 cnt !
   begin
-    cnt @ $f and 0= if hex cnt @ 2 lshift flashdictstart @ + u. then
+    cnt @ $f and 0= if hex cnt @ 2 lshift flashdict @ + u. then
     $ffffffff
-    flashdictstart @ cnt @ 2 lshift +
+    flashdict @ cnt @ 2 lshift +
     flash!
     cnt @ 1+ dup cnt !
+    1 delay
   $2d00 = until
   cr
 ;
