@@ -2,7 +2,7 @@
 
 \ internal SPI Flash register
 $40001014 constant R32_ROM_DATA
-$40001018 constant R32_ROM_CTRL
+$40001018 constant R8_ROM_CTRL
 $40001018 constant R8_ROM_DATA   \ RW
 $4000101A constant R16_ROM_CR    \ RW
 
@@ -55,7 +55,7 @@ $8000 constant ROM_ADDR_OFFSET
 : _rom-begin ( code -- )
   0     R16_ROM_CR   c!
   %111  R16_ROM_CR   c!
-        R32_ROM_CTRL c!
+        R8_ROM_CTRL  c!
 ;
 
 : _rom-write-addr ( addr -- )
@@ -116,7 +116,8 @@ $8000 constant ROM_ADDR_OFFSET
   $280000 0
   do
     _ROM_END_WRITE _rom-begin
-    _rom-data-read drop
+    _rom-data-read
+    drop
     _rom-data-read ( status )
     _rom-access-end
     1 and if r> drop 0 >r leave then
@@ -148,11 +149,11 @@ $8000 constant ROM_ADDR_OFFSET
       _rom-write-addr      ( data )
       R32_ROM_DATA !       (      )
       R16_ROM_CR c@ $10 or ( val  )
-      dup _rom-access
-      dup _rom-access
-      dup _rom-access
-          _rom-access
-      _rom-write-end
+      dup _rom-access      ( val  )
+      dup _rom-access      ( val  )
+      dup _rom-access      ( val  )
+          _rom-access      (      )
+      _rom-write-end       ( status )
     0<> until
     _rom-write-disable
   else
