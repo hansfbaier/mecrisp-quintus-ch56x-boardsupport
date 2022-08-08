@@ -12,6 +12,8 @@ $40001004 constant R8_GLOB_ROM_CFG  \ RWA, flash ROM configuration, SAM and bit7
 1 4 lshift constant ROM_CODE_OFS    \ RWA, user code offset in ROM: 1: 0x04000; 0: 0x00000.
 1 7 lshift constant ROM_WRITE  \ don't know the function for sure, must be set for writing flash
 
+$40001006 constant R8_RST_WDOG_CTRL
+
 : GLOB-ROM-CFG.
   R8_GLOB_ROM_CFG c@
   dup ROM_EXT_RE   and if cr ." ROM_EXT_RE" then
@@ -54,4 +56,15 @@ $20 constant BOOT_LOADER   \ RO, indicate boot loader status: 0=application stat
 : safe-access-mode-on ( -- )
   $57 R8_SAFE_ACCESS c!
   $a8 R8_SAFE_ACCESS c!
+;
+
+: delay ( ms -- )
+  $2ee0 * \ 12000
+  begin 1- dup 0= until
+  drop
+;
+
+: cls
+  $1b emit ." [2J"       \ clear screen
+  $1b emit ." [0;0H" cr  \ position cursor at (0,0)
 ;

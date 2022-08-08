@@ -1,16 +1,9 @@
 #require flash.fs
 #require dump.fs
-
-: delay ( ms -- )
-  $2ee0 * \ 12000
-  begin 1- dup 0= until
-  drop
-;
+#require global.fs
 
 : fstore ( data addr -- )
-  2dup !
-  rom-write-word
-  1 delay
+  !
 ;
 
 ' fstore hook-flash! !
@@ -32,26 +25,42 @@
     or              \ and combine ( data addr newdata )
     swap            ( data newdata addr )
   then
-  2dup !
-  rom-write-word
+  !
   drop
-  1 delay
 ;
 
 ' hfstore hook-hflash! !
 
-0     variable cnt
-$4c00 variable flashdict
-: eraseflash
-  0 cnt !
+: savetoflash
+  ." storing flash dictionary in rom" cr
+  $5000             ( addr )
   begin
-    cnt @ $f and 0= if hex cnt @ 2 lshift flashdict @ + u. then
-    $ffffffff
-    flashdict @ cnt @ 2 lshift +
-    flash!
-    cnt @ 1+ dup cnt !
-    1 delay
-  $2d00 = until
-  cr
+    dup dup @ swap    ( addr data addr )
+    rom-write-word    ( addr )
+    2 delay
+    [char] . emit
+    dup $ff and 0= if
+      base @ 16 base ! \ store base
+      over             \ get address
+      cr
+      u.               \ print it
+      base !           \ restore base
+    then
+    4 +
+  dup here >= until
+  ." writing rom done. reset." cr cr
+  reset
+;
+
+: eraseflash
+  $5000 rom-erase-4k
+  20 delay
+  $6000 rom-erase-4k
+  20 delay
+  $7000 rom-erase-4k
+  20 delay
+  ." erased flash memory. Reset." cr cr
+  10 delay
+  reset
 ;
 

@@ -1,0 +1,59 @@
+This is a basic board support kit for the WCH CH56x chips.
+
+Currently I only tested it with the CH569W, but it should
+work with the CH565W as well.
+
+To use this, you will need to build the binary in mecrisp-source/common/ch56x
+Steps:
+1. cd mecrisp-source/common/ch56x
+2. export ARMGNU=riscv64-unknown-elf ( or whatever your compiler is)
+3. make
+
+You can try to flash this with the default WCH-ISP-Tool.
+If that does not work, you can flash the binary also with OpenOCD.
+
+This version supports creating a flash dictionary and saving it to flash.
+
+UART default speed is 500000 baud.
+
+I recommend using e4thcom (https://wiki.forth-ev.de/doku.php/en:projects:e4thcom)
+since it provides support for including other forth files,
+which I use here.
+
+Start up the program:
+$ e4thcom -d ttyACM0 -b B500000 -t mecrisp
+You will need to replace ttyACM0 to which serial port the CH56x is
+connected.
+
+Here is how you do it:
+1. load the flashhooks and flash writing routines into the RAM dictionary:
+#i flashhooks.fs
+
+2. switch compiler to flash dictionary:
+compiletoflash
+
+3. compile the basic flash routines into the flash dictionary,
+   so that we have them available at next boot:
+#i flashhooks.fs
+
+4. load/define all the functions you want to have stored into flash
+
+5. The flash dictionary at this point has been written into the RAMX which
+   caches the flash. Now we need to write back this memory area to flash
+
+savetoflash
+
+6. The target should have been reset, and your flash words are ready!
+
+Appending to the flash dictionary is not yet supported although it should
+be easily possible.
+
+If you want to erase the flash dictionary and start over, you can do:
+eraseflash
+
+and then repeat the above steps from 1. to 6.
+
+Have fun!
+Hans
+hansfbaier@gmail.com
+

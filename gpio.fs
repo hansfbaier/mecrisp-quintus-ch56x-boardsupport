@@ -1,5 +1,3 @@
-compiletoram
-
 $40001040 constant PortA
 $40001060 constant PortB
 $00 constant DIRECTION  \ RW, I/O direction: 0=in, 1=out
