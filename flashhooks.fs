@@ -6,8 +6,6 @@
   !
 ;
 
-' fstore hook-flash! !
-
 : hfstore ( data addr -- )
   \ is the address in the upper halfword?
   dup %10 and if
@@ -28,8 +26,6 @@
   !
   drop
 ;
-
-' hfstore hook-hflash! !
 
 : savetoflash
   ." storing flash dictionary in rom" cr
@@ -64,3 +60,14 @@
   reset
 ;
 
+: flashhooks
+['] fstore hook-flash! !
+['] hfstore hook-hflash! !
+;
+
+flashhooks
+
+: init
+  flashhooks
+  ." flash hooks initialized. " cr
+;
