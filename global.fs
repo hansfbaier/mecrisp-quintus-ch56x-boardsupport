@@ -53,6 +53,118 @@ $20 constant BOOT_LOADER   \ RO, indicate boot loader status: 0=application stat
   cr
 ;
 
+$E000E000 constant PFIC
+$E000F000 constant SysTick
+
+\ $FA050000 constant PFIC_KEY1
+\ $BCAF0000 constant PFIC_KEY2
+\ $BEEF0000 constant PFIC_KEY3
+
+PFIC $0   + constant R32_PFIC_ISR       \ PFIC interrupt enable status register
+PFIC $20  + constant R32_PFIC_IPR       \ PFIC interrupt suspend status register
+PFIC $40  + constant R32_PFIC_ITHRESDR  \ PFIC interrupt priority threshold configuration register
+PFIC $44  + constant R32_PFIC_CFGR      \ PFIC interrupt configuration register
+PFIC $4C  + constant R32_PFIC_GISR      \ PFIC interrupt global status register
+PFIC $100 + constant R32_PFIC_IENR      \ PFIC interrupt enable setting register
+PFIC $180 + constant R32_PFIC_IRER      \ PFIC interrupt enable reset register
+
+base @ decimal
+1 constant  Reset_IRQn
+2 constant  NMI_IRQn
+3 constant  EXC_IRQn
+12 constant SysTick_IRQn
+14 constant SWI_IRQn
+16 constant WDOG_IRQn
+17 constant TMR0_IRQn
+18 constant GPIO_IRQn
+19 constant SPI0_IRQn
+20 constant USBSS_IRQn
+21 constant LINK_IRQn
+22 constant TMR1_IRQn
+23 constant TMR2_IRQn
+24 constant UART0_IRQn
+25 constant USBHS_IRQn
+26 constant EMMC_IRQn
+27 constant DVP_IRQn
+28 constant HSPI_IRQn
+29 constant SPI1_IRQn
+30 constant UART1_IRQn
+31 constant UART2_IRQn
+32 constant UART3_IRQn
+33 constant SERDES_IRQn
+34 constant ETH_IRQn
+35 constant PMT_IRQn
+36 constant ECDC_IRQn
+
+: interrupt-name. ( irqnum -- )
+  case
+     1 of ." Reset_IRQn"   endof
+     2 of ." NMI_IRQn"     endof
+     3 of ." EXC_IRQn"     endof
+    12 of ." SysTick_IRQn" endof
+    14 of ." SWI_IRQn"     endof
+    16 of ." WDOG_IRQn"    endof
+    17 of ." TMR0_IRQn"    endof
+    18 of ." GPIO_IRQn"    endof
+    19 of ." SPI0_IRQn"    endof
+    20 of ." USBSS_IRQn"   endof
+    21 of ." LINK_IRQn"    endof
+    22 of ." TMR1_IRQn"    endof
+    23 of ." TMR2_IRQn"    endof
+    24 of ." UART0_IRQn"   endof
+    25 of ." USBHS_IRQn"   endof
+    26 of ." EMMC_IRQn"    endof
+    27 of ." DVP_IRQn"     endof
+    28 of ." HSPI_IRQn"    endof
+    29 of ." SPI1_IRQn"    endof
+    30 of ." UART1_IRQn"   endof
+    31 of ." UART2_IRQn"   endof
+    32 of ." UART3_IRQn"   endof
+    33 of ." SERDES_IRQn"  endof
+    34 of ." ETH_IRQn"     endof
+    35 of ." PMT_IRQn"     endof
+    36 of ." ECDC_IRQn"    endof
+  endcase
+;
+
+base !
+
+: interrupts. ( intreg -- )
+  dup         ( intreg intreg )
+  @
+  12 rshift
+  31 12 do
+    dup 1 and if
+      i interrupt-name. space
+    then
+    1 rshift
+  loop
+  4 + @
+  27 0 do
+    dup 1 and if
+      i 32 + interrupt-name. space
+    then
+    1 rshift
+  loop
+;
+
+: pfic-enable-irq ( irqn -- )
+  dup
+  3 rshift
+  R32_PFIC_IENR + hex dup u. >r ( irqn r: regaddr )
+  $1f and 1 swap lshift hex dup u. r> !
+;
+
+: pfic-disable-irq ( irqn -- )
+  R32_PFIC_ITHRESDR @ swap ( ithresdr-val irqn )
+  $10 R32_PFIC_ITHRESDR !
+  dup
+  3 rshift
+  R32_PFIC_IRER + >r ( ithresdr-val irqn r: regaddr )
+  $1f and 1 swap lshift r> !
+  R32_PFIC_ITHRESDR !
+;
+
 : safe-access-mode-on ( -- )
   $57 R8_SAFE_ACCESS c!
   $a8 R8_SAFE_ACCESS c!
