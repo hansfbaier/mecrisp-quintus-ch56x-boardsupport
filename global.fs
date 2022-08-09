@@ -127,8 +127,6 @@ base @ decimal
   endcase
 ;
 
-base !
-
 : interrupts. ( intreg -- )
   dup         ( intreg intreg )
   @
@@ -148,21 +146,21 @@ base !
   loop
 ;
 
+base !
+
+\ TODO: currently only works for interrupts up to no.31
 : pfic-enable-irq ( irqn -- )
-  dup
-  3 rshift
-  R32_PFIC_IENR + hex dup u. >r ( irqn r: regaddr )
-  $1f and 1 swap lshift hex dup u. r> !
+  1 swap   ( 1 irqn )
+  lshift
+  R32_PFIC_IENR !
 ;
 
+\ TODO: currently only works for interrupts up to no.31
 : pfic-disable-irq ( irqn -- )
-  R32_PFIC_ITHRESDR @ swap ( ithresdr-val irqn )
+  R32_PFIC_ITHRESDR @ >r   ( irqn r: ithresdr-val )
   $10 R32_PFIC_ITHRESDR !
-  dup
-  3 rshift
-  R32_PFIC_IRER + >r ( ithresdr-val irqn r: regaddr )
-  $1f and 1 swap lshift r> !
-  R32_PFIC_ITHRESDR !
+  1 swap lshift R32_PFIC_IRER !
+  r> R32_PFIC_ITHRESDR !
 ;
 
 : safe-access-mode-on ( -- )
