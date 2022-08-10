@@ -1,5 +1,7 @@
-$40001000 constant R8_SAFE_ACCESS
+$20000000 constant RAMS
+$20020000 constant RAMX
 
+$40001000 constant R8_SAFE_ACCESS
 $40001001 constant R8_CHIP_ID       \ chip ID
 $69       constant CH569
 
