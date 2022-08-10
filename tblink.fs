@@ -1,3 +1,4 @@
+\ interrupt blinky example
 #require global.fs
 #require gpio.fs
 #require tmr.fs
@@ -11,8 +12,6 @@ led2 toggle
   if
     TMR1 RB_TMR_IE_CYC_END tmr-clear-intflag
     leds toggle
-    ." blink "
-  else \ ." ."
   then
 ;
 
