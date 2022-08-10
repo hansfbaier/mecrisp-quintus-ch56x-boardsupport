@@ -60,7 +60,7 @@ $10 constant  RB_TMR_IF_FIFO_OV         \  RW1, interrupt flag for timer FIFO ov
 : timer-dma-config ( startAddr endAddr loop? base-addr )
   dup TMR0 = if
     ." DMA is not available for TMR0 "
-    2drop 2drop quit
+    2drop 2drop exit
   then
 
   >r ( startAddr endAddr )  \ tuck away timer base address
