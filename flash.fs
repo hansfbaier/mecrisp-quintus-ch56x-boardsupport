@@ -71,6 +71,13 @@ $8000 constant ROM_ADDR_OFFSET
     R8_ROM_DATA c@
 ;
 
+: _rom-read-word ( -- word )
+    _rom-data-read drop
+    _rom-data-read drop
+    _rom-data-read drop
+    R32_ROM_DATA @
+;
+
 : rom-read-byte ( addr -- byte )
   ROM_ADDR_OFFSET +
   _ROM_BEGIN_READ _rom-begin
@@ -83,14 +90,11 @@ $8000 constant ROM_ADDR_OFFSET
   ROM_ADDR_OFFSET + ( addr )
   _ROM_BEGIN_READ _rom-begin
   _rom-write-addr
-  _rom-data-read drop _rom-data-read drop
-  _rom-read-byte
-  _rom-read-byte  8 lshift or
-  _rom-read-byte 16 lshift or
-  _rom-read-byte 24 lshift or
+  _rom-data-read drop
+  _rom-data-read drop
+  _rom-read-word
   _rom-access-end
 ;
-
 
 : _rom-program-start ( code -- )
   _ROM_BEGIN_WRITE _rom-begin
