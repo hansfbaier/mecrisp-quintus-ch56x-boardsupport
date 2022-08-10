@@ -127,7 +127,8 @@ base @ decimal
   endcase
 ;
 
-: interrupts. ( intreg -- )
+: interrupts. ( -- )
+  R32_PFIC_IENR
   dup         ( intreg intreg )
   @
   12 rshift
@@ -137,6 +138,7 @@ base @ decimal
     then
     1 rshift
   loop
+  drop
   4 + @
   27 0 do
     dup 1 and if
@@ -144,6 +146,7 @@ base @ decimal
     then
     1 rshift
   loop
+  drop
 ;
 
 : pfic-enable-irq ( irqn -- )
