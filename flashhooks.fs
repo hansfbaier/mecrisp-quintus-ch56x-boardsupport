@@ -27,9 +27,9 @@
   drop
 ;
 
-: savetoflash
+: savetoflash ( start-addr )
+  dup $5000 < if ." start address must at least $5000 " exit then
   ." storing flash dictionary in rom" cr
-  $5000             ( addr )
   begin
     dup dup @ swap    ( addr data addr )
     rom-write-word    ( addr )

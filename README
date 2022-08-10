@@ -39,9 +39,18 @@ compiletoflash
 4. load/define all the functions you want to have stored into flash
 
 5. The flash dictionary at this point has been written into the RAMX which
-   caches the flash. Now we need to write back this memory area to flash
+   caches the flash. Now we need to write back this memory area to flash:
 
-savetoflash
+create checkpoint
+$5000 savetoflash
+
+Since you pass a start addres to savetoflash, you can append to the flash dictionary later by
+supplying your own start address.
+The 'checkpoint' word created above then can be used as the new start address for subsequent
+dictionary writes:
+
+compiletoflash
+checkpoint savetoflash
 
 6. The target should have been reset, and your flash words are ready!
 
