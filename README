@@ -53,6 +53,10 @@ eraseflash
 
 and then repeat the above steps from 1. to 6.
 
+Contributions are welcome and the CH56x port is maintained at
+https://github.com/hansfbaier/mecrisp-quintus
+and its git submodules for ch56x.
+
 Have fun!
 Hans
 hansfbaier@gmail.com
