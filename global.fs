@@ -20,7 +20,7 @@ $40001006 constant R8_RST_WDOG_CTRL
 
 \ the variable lite needs to be defined to strip
 \ down the included code to the minimum
-lite not [if]
+[ifndef] lite
 
 : GLOB-ROM-CFG.
   R8_GLOB_ROM_CFG c@
@@ -47,7 +47,7 @@ $08 constant CFG_BOOT_EN   \ RO, boot-loader enable status
 $10 constant CFG_DEBUG_EN  \ RO, debug enable status
 $20 constant BOOT_LOADER   \ RO, indicate boot loader status: 0=application status (by software reset), 1=boot loader status
 
-lite not [if]
+[ifndef] lite
 
 : RST-BOOT-STAT.
   R8_RST_BOOT_STAT c@
@@ -110,7 +110,7 @@ base @ decimal
 35 constant PMT_IRQn
 36 constant ECDC_IRQn
 
-lite not [if]
+[ifndef] lite
 
 : interrupt-name. ( irqnum -- )
   case

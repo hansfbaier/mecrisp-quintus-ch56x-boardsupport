@@ -64,7 +64,7 @@ $8000 constant ROM_ADDR_OFFSET
                 $ff and _rom-data-write
 ;
 
-lite not [if]
+[ifndef] lite
 : _rom-read-byte ( -- byte )
     _rom-data-read drop
     _rom-data-read drop
@@ -113,7 +113,7 @@ lite not [if]
   $20 _rom-program-start
 ;
 
-lite not [if]
+[ifndef] lite
 : _rom-erase-64k-start ( -- )
   $d8 _rom-program-start
 ;
@@ -184,7 +184,7 @@ lite not [if]
   then
 ;
 
-lite not [if]
+[ifndef] lite
 \ $10000 = 64kB
 : rom-erase-64k ( addr --  )
   $ffff not and ROM_ADDR_OFFSET + ( romaddr -- )
