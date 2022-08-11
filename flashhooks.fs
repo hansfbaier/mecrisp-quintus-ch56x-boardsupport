@@ -1,6 +1,5 @@
-#require flash.fs
-#require dump.fs
 #require global.fs
+#require flash.fs
 
 : fstore ( data addr -- )
   !

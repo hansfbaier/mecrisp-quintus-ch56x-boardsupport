@@ -64,6 +64,7 @@ $8000 constant ROM_ADDR_OFFSET
                 $ff and _rom-data-write
 ;
 
+lite not [if]
 : _rom-read-byte ( -- byte )
     _rom-data-read drop
     _rom-data-read drop
@@ -96,6 +97,8 @@ $8000 constant ROM_ADDR_OFFSET
   _rom-access-end
 ;
 
+[then]
+
 : _rom-program-start ( code -- )
   _ROM_BEGIN_WRITE _rom-begin
   _rom-access-end
@@ -110,9 +113,11 @@ $8000 constant ROM_ADDR_OFFSET
   $20 _rom-program-start
 ;
 
+lite not [if]
 : _rom-erase-64k-start ( -- )
   $d8 _rom-program-start
 ;
+[then]
 
 : _rom-write-end ( -- status )
   _rom-access-end
@@ -179,6 +184,7 @@ $8000 constant ROM_ADDR_OFFSET
   then
 ;
 
+lite not [if]
 \ $10000 = 64kB
 : rom-erase-64k ( addr --  )
   $ffff not and ROM_ADDR_OFFSET + ( romaddr -- )
@@ -192,3 +198,4 @@ $8000 constant ROM_ADDR_OFFSET
     ." address out of range" cr
   then
 ;
+[then]

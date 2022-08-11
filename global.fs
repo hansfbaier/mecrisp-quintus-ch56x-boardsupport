@@ -1,3 +1,5 @@
+#require condcomp.fs
+
 $20000000 constant RAMS
 $20020000 constant RAMX
 
@@ -16,6 +18,10 @@ $40001004 constant R8_GLOB_ROM_CFG  \ RWA, flash ROM configuration, SAM and bit7
 
 $40001006 constant R8_RST_WDOG_CTRL
 
+\ the variable lite needs to be defined to strip
+\ down the included code to the minimum
+lite not [if]
+
 : GLOB-ROM-CFG.
   R8_GLOB_ROM_CFG c@
   dup ROM_EXT_RE   and if cr ." ROM_EXT_RE" then
@@ -28,6 +34,8 @@ $40001006 constant R8_RST_WDOG_CTRL
   cr
 ;
 
+[then]
+
 $40001005 constant R8_RST_BOOT_STAT \ RO, reset status and boot/debug status, bit7:6 always are 1:1
 $00 constant RST_FLAG_SW   \ 00 - software reset, by RB_SOFTWARE_RESET=1 @(RB_BOOT_LOADER=0 or RB_WDOG_RST_EN=1), or set reset request from PFIC
 $01 constant RST_FLAG_POR  \ 01 - power on reset
@@ -38,6 +46,8 @@ $04 constant CFG_RESET_EN  \ RO, manual reset input enable status
 $08 constant CFG_BOOT_EN   \ RO, boot-loader enable status
 $10 constant CFG_DEBUG_EN  \ RO, debug enable status
 $20 constant BOOT_LOADER   \ RO, indicate boot loader status: 0=application status (by software reset), 1=boot loader status
+
+lite not [if]
 
 : RST-BOOT-STAT.
   R8_RST_BOOT_STAT c@
@@ -54,6 +64,8 @@ $20 constant BOOT_LOADER   \ RO, indicate boot loader status: 0=application stat
   drop
   cr
 ;
+
+[then]
 
 $E000E000 constant PFIC
 $E000F000 constant SysTick
@@ -97,6 +109,8 @@ base @ decimal
 34 constant ETH_IRQn
 35 constant PMT_IRQn
 36 constant ECDC_IRQn
+
+lite not [if]
 
 : interrupt-name. ( irqnum -- )
   case
@@ -150,6 +164,8 @@ base @ decimal
   loop
   drop
 ;
+
+[then]
 
 : pfic-enable-irq ( irqn -- )
   dup 31 <= if
