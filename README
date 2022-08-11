@@ -28,17 +28,14 @@ connected.
 Here is how you do it:
 1. load the flashhooks and flash writing routines into the RAM dictionary:
 
-0 constant lite
 #i flashhooks.fs
 
 2. switch compiler to flash dictionary:
 compiletoflash
 
-3. set the lite constant   for conditional compilation (0 means full version)
-   and compile the basic flash routines into the flash dictionary,
+3. compile the basic flash routines into the flash dictionary,
    so that we have them available at next boot:
 
-0 constant lite
 #i flashhooks.fs
 
 4. load/define all the functions you want to have stored into flash

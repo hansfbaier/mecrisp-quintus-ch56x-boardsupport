@@ -45,3 +45,6 @@
 : [if]   ( ? -- )                 0=  if postpone [else] then immediate 1-foldable ;
 : [ifdef]  ( -- ) token find drop 0=  if postpone [else] then immediate 0-foldable ;
 : [ifndef] ( -- ) token find drop 0<> if postpone [else] then immediate 0-foldable ;
+
+\ lite mode by default, because memory is tight
+-1 constant lite
