@@ -27,6 +27,20 @@ decimal
    r> drop
 ;
 
+\ ------------------------
+\  A quick list of words
+\ ------------------------
+
+: list ( -- )
+  cr
+  dictionarystart
+  begin
+    dup 8 + ctype space
+    dictionarynext
+  until
+  drop
+;
+
 : ?emit ( n -- )
     dup 31 >
     over 127 < and \ .s
