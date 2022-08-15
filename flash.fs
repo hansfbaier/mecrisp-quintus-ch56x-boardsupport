@@ -93,6 +93,10 @@ $8000 constant ROM_ADDR_OFFSET
   _rom-write-addr
   _rom-data-read drop
   _rom-data-read drop
+  _rom-data-read drop
+  _rom-data-read drop
+  _rom-data-read drop
+  _rom-data-read drop
   _rom-read-word
   _rom-access-end
 ;

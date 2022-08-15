@@ -4,20 +4,6 @@
 \ This is free software under GNU General Public License v3.
 \ Usage: Specify your target address in disasm-$ and give disasm-step some calls.
 
-\ ------------------------
-\  A quick list of words
-\ ------------------------
-
-: list ( -- )
-  cr
-  dictionarystart
-  begin
-    dup 8 + ctype space
-    dictionarynext
-  until
-  drop
-;
-
 \ ---------------------------------------
 \  Memory pointer and instruction fetch
 \ ---------------------------------------
