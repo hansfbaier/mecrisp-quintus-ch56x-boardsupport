@@ -397,7 +397,6 @@ orientation-landscape
   does> @ color !
 ;
 
-
 $000000 rgb: black      \ 0
 $800000 rgb: maroon     \ 1
 $00FF00 rgb: green      \ 2
@@ -498,7 +497,7 @@ Create color-tab 17 h,
 ;
 
 : color-demo ( -- )
-    black 150 0 10 80 filled-rectangle
+    black TFT_LONG_SIDE 0 10 TFT_SHORT_SIDE filled-rectangle
     color-tab h@
     0 ?DO
         I color!
