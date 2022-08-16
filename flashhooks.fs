@@ -49,13 +49,13 @@
 
 : eraseflash
   $5000 rom-erase-4k
-  50 ms
-  $6000 rom-erase-4k
-  50 ms
-  $7000 rom-erase-4k
-  50 ms
-  ." erased flash memory. Reset." cr cr
   25 ms
+  $6000 rom-erase-4k
+  25 ms
+  $7000 rom-erase-4k
+  25 ms
+  ." erased flash memory. Reset." cr cr
+  15 ms
   reset
 ;
 

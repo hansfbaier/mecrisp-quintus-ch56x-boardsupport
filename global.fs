@@ -204,7 +204,7 @@ PFIC $180 + constant R32_PFIC_IRER      \ PFIC interrupt enable reset register
 
 [ifndef] MS_CYCLES
 \ 1 ms @ 120MHz
-#4992 constant MS_CYCLES
+#9984 constant MS_CYCLES
 [then]
 
 [ifndef] ms

@@ -56,7 +56,7 @@ led0 led1 led2 or or constant leds
 
 [ifndef] MS_CYCLES
 \ 1 ms @ 120MHz
-#4992 constant MS_CYCLES
+#9984 constant MS_CYCLES
 [then]
 
 [ifndef] ms
@@ -71,10 +71,10 @@ led0 led1 led2 or or constant leds
   init-leds
   begin
     led0 toggle
-    50 ms
+    25 ms
     led1 toggle
-    50 ms
+    25 ms
     led2 toggle
-    50 ms
+    25 ms
   key? until
 ;
