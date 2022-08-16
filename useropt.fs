@@ -13,6 +13,7 @@ $FFF00FFF constant FLASH_WRProt
 $04 constant WRProt_Size \ 4kB
 WRProt_Size 12 lshift constant FLASH_WRProt_Size_4KB
 
+\ WARNING: This has been untested and can possibly brick your chip!
 : write-user-option-bytes ( options flashprot-size boot-pin-en -- error )
   >r \ tuck away bootpin enable
   >r \ tuck away flashprotection size
