@@ -457,10 +457,12 @@ Create color-tab 17 h,
 
 : set-shape ( x y x' y' -- )
     orientation @
-    IF 26 + rot 26 + row-address!       \ x landscape
-        swap 1 1 xy+ column-address!    \ y
-    ELSE rot 1 1 xy+ row-address!       \ x portrait
-        26 + swap 26 + column-address!  \ y
+    IF
+      rot row-address!       \ x landscape
+      swap 1 1 xy+ column-address!    \ y
+    ELSE
+      rot 1 1 xy+ row-address!       \ x portrait
+      swap column-address!  \ y
     THEN
 ;
 
