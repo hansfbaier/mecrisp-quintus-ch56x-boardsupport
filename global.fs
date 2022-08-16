@@ -202,11 +202,18 @@ PFIC $180 + constant R32_PFIC_IRER      \ PFIC interrupt enable reset register
   $a8 R8_SAFE_ACCESS c!
 ;
 
-: delay ( ms -- )
-  $2ee0 * \ 12000
+[ifndef] MS_CYCLES
+\ 1 ms @ 120MHz
+#4992 constant MS_CYCLES
+[then]
+
+[ifndef] ms
+: ms ( ms -- )
+  MS_CYCLES *
   begin 1- dup 0= until
   drop
 ;
+[then]
 
 : cls
   $1b emit ." [2J"       \ clear screen

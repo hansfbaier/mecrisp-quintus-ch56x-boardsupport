@@ -32,7 +32,7 @@
   begin
     dup dup @ swap    ( addr data addr )
     rom-write-word    ( addr )
-    2 delay
+    5 ms
     [char] . emit
     dup $ff and 0= if
       base @ 16 base ! \ store base
@@ -49,13 +49,13 @@
 
 : eraseflash
   $5000 rom-erase-4k
-  20 delay
+  50 ms
   $6000 rom-erase-4k
-  20 delay
+  50 ms
   $7000 rom-erase-4k
-  20 delay
+  50 ms
   ." erased flash memory. Reset." cr cr
-  10 delay
+  25 ms
   reset
 ;
 

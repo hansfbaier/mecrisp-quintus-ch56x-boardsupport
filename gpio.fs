@@ -52,20 +52,27 @@ led0 led1 led2 or or constant leds
   PortB OUT gpio-toggle
 ;
 
-: delay ( ms -- )
-  12000 *
+[ifndef] MS_CYCLES
+\ 1 ms @ 120MHz
+#4992 constant MS_CYCLES
+[then]
+
+[ifndef] ms
+: ms ( ms -- )
+  MS_CYCLES *
   begin 1- dup 0= until
   drop
 ;
+[then]
 
 : blinky
   init-leds
   begin
     led0 toggle
-    50 delay
+    50 ms
     led1 toggle
-    50 delay
+    50 ms
     led2 toggle
-    50 delay
+    50 ms
   key? until
 ;
