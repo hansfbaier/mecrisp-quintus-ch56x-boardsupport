@@ -1,11 +1,13 @@
 \ tft-basics.txt
 \ Part of pixelmaler-v0.1 for Mecrisp-Quintus - A native code Forth implementation for RISC-V
 \ Copyright (C) 2018  Matthias Koch
-\ display longan nano
+\ Copyright (C) 2022  Hans Baier (adaptation to CH56x)
+\ ST7735 128x160 display
 \ MB March 2020
+\ HB August 2022
 
 \ This is work in progress!
-\ It needs 'ms', 'spi0-init' one of the tree files xy.txt, xy-hard.txt
+\ It needs 'ms', one of the tree files xy.txt, xy-hard.txt
 \ or xy-high-level.txt. I recommend xy-hard.txt.
 \ tft-basics.txt includes the words to comminicate with the
 \ driver chip ST7735S.
@@ -14,7 +16,7 @@
 \ mecrisp-quintus-experimental-xxxx-/gd32vf103cb/common
 \ How to implement see end of file!
 \
-\ There are some usefull enhancments in different files:
+\ There are some useful enhancments in different files:
 \ txt-graphs.txt -- lines, circles, rectangles
 \ txt-fonts.txt  -- chars, strings, and different UTF8-fonts
 \ txt-scroll.txt -- An example how to use the built in scroll function
@@ -132,52 +134,55 @@ decimal
 
    \ System function Commands
    0 $01 command: swreset ( -- )
-   0 $10 command: slpin ( -- )   \ sleep in @ booster off
-   0 $11 command: spout ( -- )  \ sleep-out @ booster on
-   0 $12 command: ptlon ( -- )  \ partial mode on
-   0 $13 command: noron ( -- )  \ partial mode off (normal)
-   0 $20 command: invoff ( -- )  \ display inversion off (normal)
-   0 $21 command: invon ( -- )  \ display inversion on
-   1 $26 command: gamset  ( b -- ) \ gamma curve select
-   0 $28 command: dispoff ( -- )  \ display off
-   0 $29 command: dispon ( -- )  \ display on
-   4 $2A command: caset ( h-byte1 low-byte1 h-byte2 low-byte2 -- ) \ column address set
-   4 $2B command: raset ( h-byte1 low-byte1 h-byte2 low-byte2 -- ) \ row address set
+   0 $10 command: slpin   ( -- )                                       \ sleep in @ booster off
+   0 $11 command: spout   ( -- )                                       \ sleep-out @ booster on
+   0 $12 command: ptlon   ( -- )                                       \ partial mode on
+   0 $13 command: noron   ( -- )                                       \ partial mode off (normal)
+   0 $20 command: invoff  ( -- )                                       \ display inversion off (normal)
+   0 $21 command: invon   ( -- )                                       \ display inversion on
+   1 $26 command: gamset  ( b -- )                                     \ gamma curve select
+   0 $28 command: dispoff ( -- )                                       \ display off
+   0 $29 command: dispon  ( -- )                                       \ display on
+   4 $2A command: caset   ( h-byte1 low-byte1 h-byte2 low-byte2 -- )   \ column address set
+   4 $2B command: raset   ( h-byte1 low-byte1 h-byte2 low-byte2 -- )   \ row address set
+
    0 $2c command: ramwr \ write meory i.e. start writing,
-   \                      all consecutive bytes must be send via byte>tft
-   \                      or 2bytes>tft (in my case this latter is used (16-bit pixel)
- 128 $2D command: rgbset ( red_tone*$a0 green_tone*$b0 blue_tone*$a0 -- )  \ LUT for color display \ can't understand 128 ???
-   4 $30 command: ptlar ( h-byte1 low-byte1 h-byte2 low-byte2 -- )  \ partial start/end address set
-   6 $33 command: scrlar ( top-fixed-area height-scroll-area bottom-fixed-area -- ) \ scroll area set
-   0 $34 command: teoff ( -- ) \ tearing effect line off; not connectet with nano
-   1 $35 command: teon ( b -- ) \ tearing effect mode set & on; not connected with nano
-   1 $36 command: madctl ( b -- ) \ memory data access control
-   2 $37 command: vscsad ( b b -- ) \ scroll start address of RAM
-   0 $38 command: idmoff ( -- ) \ idle mode off
-   0 $39 command: idmon ( -- ) \ idle mode on
-   1 $3a command: colmode ( b -- ) \ color mode
+                        \ all consecutive bytes must be send via byte>tft
+                        \ or 2bytes>tft (in my case this latter is used (16-bit pixel)
+
+ 128 $2D command: rgbset  ( red_tone*$a0 green_tone*$b0 blue_tone*$a0 -- )           \ LUT for color display \ can't understand 128 ???
+   4 $30 command: ptlar   ( h-byte1 low-byte1 h-byte2 low-byte2 -- )                 \ partial start/end address set
+   6 $33 command: scrlar  ( top-fixed-area height-scroll-area bottom-fixed-area -- ) \ scroll area set
+   0 $34 command: teoff   ( -- )                                                     \ tearing effect line off; not connectet with nano
+   1 $35 command: teon    ( b -- )                                                   \ tearing effect mode set & on; not connected with nano
+   1 $36 command: madctl  ( b -- )                                                   \ memory data access control
+   2 $37 command: vscsad  ( b b -- )                                                 \ scroll start address of RAM
+   0 $38 command: idmoff  ( -- )                                                     \ idle mode off
+   0 $39 command: idmon   ( -- )                                                     \ idle mode on
+   1 $3a command: colmode ( b -- )                                                   \ color mode
 
    \ Panel Function Commands
-   3 $b1 command: frmctr1 ( b b b  -- ) \ in normal mode
-   3 $b2 command: frmctr2 ( b b b -- ) \ in idle mode
+   3 $b1 command: frmctr1 ( b b b  -- )      \ in normal mode
+   3 $b2 command: frmctr2 ( b b b -- )       \ in idle mode
    6 $b3 command: frmctr3 ( b b b b b b -- ) \ in partial mode & full colors
-   1 $b4 command: invctr ( b -- ) \ display inversion control
-   3 $c0 command: pwctr1 ( b b b -- ) \ power contrl setting; GVDD voltage
-   1 $c1 command: pwctr2 ( b -- ) \ power control setting; VGH/VGL voltage
-   2 $c2 command: pwctr3 ( b b -- ) \ power control setting; in normal mode full colors; adjust amplifier & booster voltage
-   2 $c3 command: pwctr4 ( b b -- ) \ power control setting; in idle mode 8-colors; adjust amplifier & booster voltage
-   2 $c4 command: pwctr5 ( b b -- ) \ power control setting; in idle partial mode full colors; adjust amplifier & booster voltage
-   1 $c5 command: vmctr1 ( b -- ) \ VCOM control 1, voltage
-   1 $c7 command: vmofctr ( b -- ) \ set VCOM offset control ;  see: nvctr1-3
-   1 $d1 command: wrid2 ( b -- ) \ set LMC version code at ID2 (fixed?) see: nvctr1-3
-   1 $d2 command: wrid3 ( b -- ) \ set customer project code at ID3 (fixed?)  see: nvctr1-3
+   1 $b4 command: invctr  ( b -- )           \ display inversion control
+   3 $c0 command: pwctr1  ( b b b -- )       \ power contrl setting; GVDD voltage
+   1 $c1 command: pwctr2  ( b -- )           \ power control setting; VGH/VGL voltage
+   2 $c2 command: pwctr3  ( b b -- )         \ power control setting; in normal mode full colors; adjust amplifier & booster voltage
+   2 $c3 command: pwctr4  ( b b -- )         \ power control setting; in idle mode 8-colors; adjust amplifier & booster voltage
+   2 $c4 command: pwctr5  ( b b -- )         \ power control setting; in idle partial mode full colors; adjust amplifier & booster voltage
+   1 $c5 command: vmctr1  ( b -- )           \ VCOM control 1, voltage
+   1 $c7 command: vmofctr ( b -- )           \ set VCOM offset control ;  see: nvctr1-3
+   1 $d1 command: wrid2   ( b -- )           \ set LMC version code at ID2 (fixed?) see: nvctr1-3
+   1 $d2 command: wrid3   ( b -- )           \ set customer project code at ID3 (fixed?)  see: nvctr1-3
+
    \ Note 2: The D9h, Deh and DFh registers are used for NV Memory function controller. (Ex: write, clear, etc.)
-   1 $d9 command: nvctr1 ( b -- ) \ NVM control status; must be supplied with external 7.5V
-   2 $de command: nvctr2 ( b b -- ) \ NVM read command; b1=F5 b2=A5 action code .i.e don't read something via SPI?
-   2 $df command: nvctr3 ( b b -- ) \ NVM write command; b=A5 action code
-   16 $e0 command: gamctrp1 ( b1 .. b16 ) \ set gamma adjustment +polarity
-   16 $e1 command: gamctrn1 ( b1 .. b16 ) \ set gamma adjustment -polarity
-   1 $fc command: gcv ( b -- ) \ gate clock varaible
+    1 $d9 command: nvctr1    ( b -- )         \ NVM control status; must be supplied with external 7.5V
+    2 $de command: nvctr2    ( b b -- )       \ NVM read command; b1=F5 b2=A5 action code .i.e don't read something via SPI?
+    2 $df command: nvctr3    ( b b -- )       \ NVM write command; b=A5 action code
+   16 $e0 command: gamctrp1  ( b1 .. b16 )    \ set gamma adjustment +polarity
+   16 $e1 command: gamctrn1  ( b1 .. b16 )    \ set gamma adjustment -polarity
+    1 $fc command: gcv       ( b -- )         \ gate clock varaible
 
    \ end of semi-primitives now starting high-level
 
@@ -243,16 +248,9 @@ $78 Variable (madctl) \ we need a shadow register. spi0-soft is able to read fro
         swap $100 /mod rot $100 /mod raset ;
 
 
-
-\ The values for the initial commands came from
-\ https://github.com/sipeed/Longan_GD32VF_examples. I don't had
-\ the nerves puzzle them out of the data sheets. :-)
-
-
 \ In tft-init there is a use of 'ms'. If you don't have a 'ms' in your system
-\ replaces it by DO LOOP. Maybe you have to fiddel a litle bit to find
+\ replaces it by DO LOOP. Maybe you have to fiddle a litle bit to find
 \ values that fit.
-\
 
 : tft-init ( -- )
   tft-gpio-init
@@ -302,7 +300,6 @@ $78 Variable (madctl) \ we need a shadow register. spi0-soft is able to read fro
 [ifndef] TFT_SHORT_SIDE
 128 constant TFT_SHORT_SIDE
 [then]
-
 
 [ifndef] tft-width
 TFT_LONG_SIDE Variable tft-width
@@ -423,7 +420,6 @@ $FFFFFF rgb: white       \ 16
     color @ h,
 ;
 
-
 Create color-tab 17 h,
   black       >color-tab \ 0
   maroon      >color-tab \ 1
@@ -447,14 +443,12 @@ Create color-tab 17 h,
     color-tab h@
 ;
 
-
 : color! ( n -- )
     color-tab h@
     min 0 max
     1+ 2* color-tab + h@
     color !
 ;
-
 
 \ basic graphics
 
