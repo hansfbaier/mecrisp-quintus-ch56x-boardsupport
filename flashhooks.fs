@@ -47,15 +47,20 @@
   reset
 ;
 
-: eraseflash
-  $5000 rom-erase-4k
-  25 ms
-  $6000 rom-erase-4k
-  25 ms
-  $7000 rom-erase-4k
-  25 ms
-  ." erased flash memory. Reset." cr cr
-  15 ms
+: eraseflash ( -- )
+  0 >r
+  begin
+    $5000 $1000 r@ * + dup
+    cr ." erase " hex.
+    rom-erase-4k
+    50 ms
+    ." done."
+    r> 1+ dup >r
+  11 = until
+  rdrop
+
+  cr ." erased flash memory. Reset." cr cr
+  30 ms
   reset
 ;
 
