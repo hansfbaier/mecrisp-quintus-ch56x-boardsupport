@@ -304,7 +304,7 @@ tft-width @ 2/ tft-height @ 2/ 2Variable midpoint
 : key-pressed? ( -- flag)  \ handles key strokes
     key?                   \ is a key pressed?
     IF                     \ if ...
-    key                    \ wich key
+    key                    \ which key
     case                   \ in case of ...
         [char] + of -wait FALSE endof \ accelerate
         [char] - of +wait FALSE endof  \ slow down
