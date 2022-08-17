@@ -4,7 +4,7 @@
 \ display longan nano
 \ MB March 2020
 
-#require tft-basics.fs
+#require graphics/tft-basics.fs
 
 \ ----------------------------------------------------------------
 \ -------------- basic graphic routines --------------------------
