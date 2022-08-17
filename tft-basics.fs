@@ -459,9 +459,9 @@ Create color-tab 17 h,
     orientation @
     IF
       rot row-address!       \ x landscape
-      swap 1 1 xy+ column-address!    \ y
+      swap column-address!    \ y
     ELSE
-      rot 1 1 xy+ row-address!       \ x portrait
+      rot row-address!       \ x portrait
       swap column-address!  \ y
     THEN
 ;
