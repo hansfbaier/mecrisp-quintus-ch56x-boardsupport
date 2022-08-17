@@ -248,10 +248,10 @@ then ;
     white char-fg-col!
     blue char-bg-col!
     small-font
-    s" Three fonts in one  Display!" tft-type
+    s" Two fonts on one  Display!" tft-type tft-cr tft-cr
     maroon char-bg-col!
     big-font 1 0 tft-at
-    s" German: ÄÖÜäüöß" utf-type
+    s" German: ÄÖÜäüöß" utf-type tft-cr tft-cr
     green char-bg-col!
-    s" Mecrisp" tft-type
+    s" Mecrisp" tft-type tft-cr
 ;
