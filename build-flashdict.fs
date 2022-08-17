@@ -19,10 +19,9 @@ compiletoflash
 
 \ graphics
 1 [if]
-#require tft-basics.fs
-#require tft-graphics.fs
-#require turtle.fs
-[then]
+#require graphics/tft-basics.fs
+#require graphics/tft-graphics.fs
+#require graphics/turtle.fs
 
 : init
   init
@@ -33,6 +32,7 @@ compiletoflash
   ." press 'q' to quit graphics demo " cr
   graphics-demo
 ;
+[then]
 
 char m emit char e emit char m emit char : emit space
 unused . cr
