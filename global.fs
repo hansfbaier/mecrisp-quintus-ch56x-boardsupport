@@ -214,6 +214,19 @@ PFIC $180 + constant R32_PFIC_IRER      \ PFIC interrupt enable reset register
 ;
 [then]
 
+[ifndef] US_CYCLES
+\ 1 ms @ 120MHz
+#3 constant US_CYCLES
+[then]
+
+[ifndef] us
+: us ( us -- )
+  US_CYCLES *
+  begin 1- dup 0= until
+  drop
+;
+[then]
+
 : cls
   $1b emit ." [2J"       \ clear screen
   $1b emit ." [0;0H" cr  \ position cursor at (0,0)
