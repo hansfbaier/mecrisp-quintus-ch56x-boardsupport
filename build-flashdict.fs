@@ -30,7 +30,7 @@ compiletoflash
   tft-clear   100 ms
   color-demo  100 ms
   turtle-demo 100 ms
-  ." press 'q' to quit graphics demo "
+  ." press 'q' to quit graphics demo " cr
   graphics-demo
 ;
 

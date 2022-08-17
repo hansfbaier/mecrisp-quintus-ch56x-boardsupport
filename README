@@ -25,27 +25,35 @@ $ e4thcom -d ttyACM0 -b B500000 -t mecrisp
 You will need to replace ttyACM0 to which serial port the CH56x is
 connected.
 
-Here is how you do it:
-1. load the flashhooks and flash writing routines into the RAM dictionary:
 
-#i flashhooks.fs
+BUILDING A FLASH DICTIONARY
 
-2. switch compiler to flash dictionary:
-compiletoflash
+* automatically:
+  - edit build-flashdict.fs to include wanted libraries and then:
+  #i build-flashdict.fs
 
-3. compile the basic flash routines into the flash dictionary,
-   so that we have them available at next boot:
+* manually:
+  1. load the flashhooks and flash writing routines into the RAM dictionary:
 
-#i flashhooks.fs
+     #i flashhooks.fs
 
-4. load/define all the functions you want to have stored into flash
+  2. switch compiler to flash dictionary:
 
-5. The flash dictionary at this point has been written into the RAMX which
-   caches the flash. Now we need to write back this memory area to flash
+     compiletoflash
 
-savetoflash
+  3. compile the basic flash routines into the flash dictionary,
+     so that we have them available at next boot:
 
-6. The target should have been reset, and your flash words are ready!
+     #i flashhooks.fs
+
+  4. load/define all the functions you want to have stored into flash
+
+  5. The flash dictionary at this point has been written into the RAMX which
+     caches the flash. Now we need to write back this memory area to flash
+
+     savetoflash
+
+  6. The target should have been reset, and your flash words are ready!
 
 Appending to the flash dictionary is not yet supported although it should
 be easily possible.
