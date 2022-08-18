@@ -110,11 +110,11 @@ $1C constant SPI_DMA_END
 ;
 
 : spi-master-init ( spi-base -- )
-  dup R8_CLOCK_DIV #20                       spi-config-write
+  dup R8_CLOCK_DIV #2                        spi-config-write
   dup R8_CTRL_MOD  SPI_ALL_CLEAR             spi-config-write
   dup R8_CTRL_MOD  SPI_MOSI_OE SPI_SCK_OE or spi-config-write
 
-  [ pin 12 pin 13 pin 14 or or literal, ]
+  [ pin 12  pin 13  pin 14  or or literal, ]
   PortA DIRECTION +
   bis!
 
