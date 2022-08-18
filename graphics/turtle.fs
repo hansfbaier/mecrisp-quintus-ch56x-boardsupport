@@ -11,9 +11,9 @@
 \ Calculating the position of the turtle with fixpoint math has
 \ the great advantage to avoid rounding faults.
 
-#require  tft-basics.fs
-#require  tft-graphics.fs
 #require  fixpt-math-lib.fs
+#require  graphics/tft-basics.fs
+#require  graphics/tft-graphics.fs
 
 0. 2Variable t-sin
 0. 2Variable t-cos
@@ -95,9 +95,6 @@
 : tr ( n -- ) \ turn right
     negate turn
 ;
-
-
-
 
 : fd-y ( n -- y0 y1 )
     t-y @              \ lenght old-x(int)

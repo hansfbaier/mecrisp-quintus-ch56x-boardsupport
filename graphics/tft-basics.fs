@@ -510,4 +510,3 @@ Create color-tab 17 h,
         filled-rectangle
     LOOP
 ;
-
