@@ -11,14 +11,14 @@ compiletoflash
 #require gpio.fs
 #require tmr.fs
 #require spi.fs
-\ #require multitask.fs
+#require multitask.fs
 
 \ debugging tools
 #require dump.fs
 #require disass.fs
 
 \ graphics
-1 [if]
+0 [if]
 #require graphics/tft-basics.fs
 #require graphics/tft-graphics.fs
 #require graphics/turtle.fs
