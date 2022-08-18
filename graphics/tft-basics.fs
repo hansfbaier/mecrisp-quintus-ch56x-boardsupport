@@ -385,9 +385,9 @@ orientation-landscape
 
 : rgb ( rgb -- n )
     $100 /mod $100 /mod
-    %11111  $FF */ 11 lshift -rot
+    %11111  $FF */ -rot
     %111111 $FF */ 5 lshift -rot
-    %11111  $FF */
+    %11111  $FF */ 11 lshift
     + +
 ;
 
