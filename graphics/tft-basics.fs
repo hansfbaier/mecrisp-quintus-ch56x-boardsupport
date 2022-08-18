@@ -260,7 +260,6 @@ $78 Variable (madctl) \ we need a shadow register. spi0-soft is able to read fro
   +tft-rst 20 ms
   \ ------------------------------------
   spout 100 ms
-  invon
   f-rate-normal f-rate-idle f-rate-partial
   inversion-control
   power1 power2 power3 power4 power5 Vcom
