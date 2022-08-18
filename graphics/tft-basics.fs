@@ -50,7 +50,7 @@
 \ datasheet See: spi0-soft.txt and/or spi0-hard.txt
 
 #require spi.fs
-#require xy-hard.fs
+#require graphics/xy-hard.fs
 
 [ifndef] TFT_SPI
   SPI0 constant TFT_SPI

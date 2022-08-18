@@ -78,7 +78,7 @@
    ELSE char-bg-col   \ ( space \ [char] . emit )
    THEN
    color @ 2bytes>tft \ draw one pixel
-   2*                 \ rshift
+   2*                 \ lshift
    LOOP drop
 ;
 
