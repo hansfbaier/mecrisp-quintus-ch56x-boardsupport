@@ -40,3 +40,12 @@
   drop
 ;
 
+: mytext-demo
+  tft-init
+  black tft-clear
+  0 text-x !
+  0 text-y !
+  7712 0 do
+    i $f and hexdigit
+  loop
+;
