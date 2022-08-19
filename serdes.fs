@@ -82,7 +82,7 @@ SERDES_BASE
 #3 #20 lshift constant SDS_TX_NUMP_3	 \ Not documented/not used
 #4 #20 lshift constant SDS_TX_NUMP_4	 \ Not documented/not used
 
-: _serdes-basic-init ( -- )
+: _serdes-basic-init ( SDS_PLL_FREQ -- )
   safe-access-mode-on
   $5a       R16_SERD_ANA_CFG1 h!
   $00423015 R32_SERD_ANA_CFG2  !
@@ -113,7 +113,7 @@ SERDES_BASE
 ;
 
 : serdes-tx-init ( SDS_PLL_FREQ -- )
-  _serdes-basic-init
+  dup _serdes-basic-init
   >r
 
   SDS_POWR_UP      SDS_TX_PU   SDS_RX_PU  SDS_PLL_PU    r>           or or or or
@@ -130,7 +130,7 @@ SERDES_BASE
 ;
 
 : serdes-rx-init ( SDS_PLL_FREQ )
-  _serdes-basic-init
+  dup _serdes-basic-init
   >r
 
   SDS_POWR_UP SDS_TX_PU SDS_RX_PU SDS_PLL_PU r>   or or or or
