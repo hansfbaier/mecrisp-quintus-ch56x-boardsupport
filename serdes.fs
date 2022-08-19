@@ -92,7 +92,8 @@ SERDES_BASE
   R32_SDS_CTRL !
   1 ms
 
-  SDS_POWR_UP SDS_TX_PU SDS_RX_PU r> LINK_RESET SDS_ALL_CLR or or or or or
+  SDS_POWR_UP  SDS_TX_PU  SDS_RX_PU  r>  LINK_RESET  SDS_ALL_CLR
+               or         or         or  or          or
   R32_SDS_CTRL !
 
   begin
@@ -116,8 +117,10 @@ SERDES_BASE
   dup _serdes-basic-init
   >r
 
-  SDS_POWR_UP      SDS_TX_PU   SDS_RX_PU  SDS_PLL_PU    r>           or or or or
-  SDS_INT_BUSY_EN  SDS_DMA_EN  SDS_TX_EN  SDS_ALIGN_EN  SDS_CONT_EN  or or or or
+  SDS_POWR_UP      SDS_TX_PU   SDS_RX_PU  SDS_PLL_PU    r>
+                   or          or         or            or
+  SDS_INT_BUSY_EN  SDS_DMA_EN  SDS_TX_EN  SDS_ALIGN_EN  SDS_CONT_EN
+                   or          or         or            or
   or
   R32_SDS_CTRL !
 
@@ -133,8 +136,10 @@ SERDES_BASE
   dup _serdes-basic-init
   >r
 
-  SDS_POWR_UP SDS_TX_PU SDS_RX_PU SDS_PLL_PU r>   or or or or
-  SDS_DMA_EN  SDS_RX_EN or
+  SDS_POWR_UP  SDS_TX_PU  SDS_RX_PU  SDS_PLL_PU  r>
+               or         or         or          or
+  SDS_DMA_EN   SDS_RX_EN
+               or
   or
   R32_SDS_CTRL !
 ;
