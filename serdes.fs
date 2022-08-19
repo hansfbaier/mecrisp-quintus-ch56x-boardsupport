@@ -8,16 +8,16 @@ $40001024 constant R32_SERD_ANA_CFG2  \ RWA, Serdes Analog parameter configurati
 
 $4000B000 constant SERDES_BASE
 SERDES_BASE
-  4 + dup constant R32_SDS_CTRL
-  4 + dup constant R32_SDS_INT_EN
-  4 + dup constant R32_SDS_STATUS
-  4 + dup constant R32_SDS_RTX_CTRL
-  4 + dup constant R32_SDS_RX_LEN0
-  4 + dup constant R32_SDS_DATA0
-  4 + dup constant R32_SDS_DMA0
-  4 + dup constant R32_SDS_RX_LEN1
-  4 + dup constant R32_SDS_DATA1
-  4 +     constant R32_SDS_DMA1
+  #4 + dup constant R32_SDS_CTRL
+  #4 + dup constant R32_SDS_INT_EN
+  #4 + dup constant R32_SDS_STATUS
+  #4 + dup constant R32_SDS_RTX_CTRL
+  #4 + dup constant R32_SDS_RX_LEN0
+  #4 + dup constant R32_SDS_DATA0
+  #4 + dup constant R32_SDS_DMA0
+  #4 + dup constant R32_SDS_RX_LEN1
+  #4 + dup constant R32_SDS_DATA1
+  #4 +     constant R32_SDS_DMA1
 
 \ configuration bits
 1  #18 lshift constant SDS_ALIGN_EN	 \ SDS SATA ALIGN Primitive
