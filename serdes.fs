@@ -6,9 +6,8 @@
 $40001020 constant R16_SERD_ANA_CFG1  \ RWA, Serdes Analog parameter configuration1
 $40001024 constant R32_SERD_ANA_CFG2  \ RWA, Serdes Analog parameter configuration2
 
-$4000B000 constant SERDES_BASE
-SERDES_BASE
-  #4 + dup constant R32_SDS_CTRL
+$4000B000
+       dup constant R32_SDS_CTRL
   #4 + dup constant R32_SDS_INT_EN
   #4 + dup constant R32_SDS_STATUS
   #4 + dup constant R32_SDS_RTX_CTRL
