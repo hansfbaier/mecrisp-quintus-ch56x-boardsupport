@@ -91,8 +91,8 @@ $4000B000
   R32_SDS_CTRL !
   1 ms
 
-  SDS_POWR_UP  SDS_TX_PU  SDS_RX_PU  r>  LINK_RESET  SDS_ALL_CLR
-               or         or         or  or          or
+  SDS_POWR_UP  SDS_TX_PU  SDS_RX_PU  SDS_PLL_PU r>  LINK_RESET  SDS_ALL_CLR
+               or         or         or         or  or          or
   R32_SDS_CTRL !
 
   begin
